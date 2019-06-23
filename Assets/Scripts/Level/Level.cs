@@ -4,7 +4,8 @@ namespace RunAndJump
 {
     public partial class Level : MonoBehaviour
     {
-        [SerializeField]
+        //[SerializeField]
+        [LevelCreator.Time]
         public int _totalTime = 60;
         [SerializeField]
         private float _gravity = -30;
@@ -16,6 +17,8 @@ namespace RunAndJump
         private int _totalColumns = 25;
         [SerializeField]
         private int _totalRows = 10;
+        [SerializeField]
+        private LevelPiece[] _pieces;
 
         public const float GridSize = 1.28f;
 
@@ -56,6 +59,12 @@ namespace RunAndJump
         {
             get { return _totalRows; }
             set { _totalRows = value; }
+        }
+
+        public LevelPiece[] Pieces
+        {
+            get { return _pieces; }
+            set { _pieces = value; }
         }
 
         private void OnDrawGizmos()
