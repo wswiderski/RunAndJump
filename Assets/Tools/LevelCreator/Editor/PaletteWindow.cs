@@ -13,7 +13,6 @@ namespace RunAndJump.LevelCreator
         private List<string> _categoryLabels;
         private PaletteItem.Category _categorySelected;
 
-
         private const float ButtonWidth = 80;
         private const float ButtonHeight = 90;
 
@@ -22,6 +21,9 @@ namespace RunAndJump.LevelCreator
         private Dictionary<PaletteItem.Category, List<PaletteItem>> _categorizedItems;
         private Dictionary<PaletteItem, Texture2D> _previews;
         private Vector2 _scrollPosition;
+
+        public delegate void itemSelectedDelegate(PaletteItem item, Texture2D preview);
+        public static event itemSelectedDelegate ItemSelectedEvent;
 
         public static void ShowPalette()
         {
@@ -54,6 +56,7 @@ namespace RunAndJump.LevelCreator
         private void OnGUI()
         {
             _drawTabs();
+            _drawScroll();
         }
 
         private void Update()
@@ -112,7 +115,7 @@ namespace RunAndJump.LevelCreator
                 _getGUICotentFromItems(),
                 rowCapacity,
                 _getGUIStyle());
-            GetSelectedItem(selectionGridIndex);
+            _getSelectedItem(selectionGridIndex);
             GUILayout.EndScrollView();
         }
 
@@ -150,12 +153,26 @@ namespace RunAndJump.LevelCreator
 
         private GUIStyle _getGUIStyle()
         {
-
+            GUIStyle guiStyle = new GUIStyle(GUI.skin.button);
+            guiStyle.alignment = TextAnchor.LowerCenter;
+            guiStyle.imagePosition = ImagePosition.ImageAbove;
+            guiStyle.fixedWidth = ButtonWidth;
+            guiStyle.fixedHeight = ButtonHeight;
+            return guiStyle;
         }
 
         private void _getSelectedItem(int index)
         {
+            if (index != -1)
+            {
+                PaletteItem selectedItem = _categorizedItems[_categorySelected][index];
+                Debug.Log("Selected Item is: " + selectedItem.itemName);
 
+                if (ItemSelectedEvent != null)
+                {
+                    ItemSelectedEvent(selectedItem, _previews[selectedItem]);
+                }
+            }
         }
     }
 }
