@@ -12,5 +12,11 @@ namespace RunAndJump.LevelCreator
         {
             EditorUtils.NewLevel();
         }
+
+        [MenuItem("Tools/Level Creator/Show Palette _#p")]
+        private static void ShowPalette()
+        {
+            PaletteWindow.ShowPalette();
+        }
     }
 }
